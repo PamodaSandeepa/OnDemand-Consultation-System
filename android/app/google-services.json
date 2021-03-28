@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "292009336670",
+    "firebase_url": "https://redd-a86dd.firebaseio.com",
+    "project_id": "redd-a86dd",
+    "storage_bucket": "redd-a86dd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:292009336670:android:8ca0e20e21c5111f2d39cf",
+        "android_client_info": {
+          "package_name": "com.pamoda.firebaseapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "292009336670-blavcbvg040osqfvuptr5jcq7pemp98s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpQI9h18U2wAhvckfrtdkC65_r2ZM7Bgs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "292009336670-blavcbvg040osqfvuptr5jcq7pemp98s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
