@@ -57,15 +57,19 @@ class _SignInState extends State<SignIn> {
       }
     });
   }
-  //--------------------------
 
+  //--------------------------
+  //------sign in error message
   showError(String errormessage) {
     showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text('ERROR'),
-            content: Text(errormessage),
+            content: Text(
+              errormessage,
+              style: TextStyle(color: Colors.black54),
+            ),
             actions: <Widget>[
               FlatButton(
                   onPressed: () {
@@ -76,6 +80,7 @@ class _SignInState extends State<SignIn> {
           );
         });
   }
+  //---------------------------------
 
   final _formkey = GlobalKey<FormState>(); //help the validate
 

@@ -185,7 +185,7 @@ class _ConsultantState extends State<Home> {
                                     width: 3,
                                     color: Colors.white,
                                   ),
-                                  color: Colors.blue,
+                                  color: Colors.red,
                                 ),
                                 child: IconButton(
                                   onPressed: () {},
@@ -199,18 +199,30 @@ class _ConsultantState extends State<Home> {
                         SizedBox(
                           height: 12.0,
                         ),
-                        Text(
-                          fullName,
-                          style: TextStyle(
-                            fontSize: 25.0,
-                            fontWeight: FontWeight.w800,
-                            color: Colors.black,
+                        Container(
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                  spreadRadius: 1,
+                                  blurRadius: 5,
+                                  color: Colors.black.withOpacity(0.1),
+                                  offset: Offset(0, 10))
+                            ],
+                          ),
+                          child: Text(
+                            fullName,
+                            style: TextStyle(
+                              fontSize: 25.0,
+                              fontWeight: FontWeight.w800,
+                              color: Colors.blueAccent,
+                            ),
                           ),
                         ),
                         SizedBox(
-                          height: 4.0,
+                          height: 5.0,
                         ),
                         Container(
+                          padding: EdgeInsets.all(2),
                           decoration: BoxDecoration(
                             color: Colors.red[100],
                             border: Border.all(color: Colors.red),
@@ -225,9 +237,9 @@ class _ConsultantState extends State<Home> {
                           child: Text(
                             "Verified Consultant",
                             style: TextStyle(
-                              fontSize: 14.0,
+                              fontSize: 15.0,
                               fontWeight: FontWeight.w600,
-                              color: Colors.black,
+                              color: Colors.red,
                             ),
                           ),
                         ),
