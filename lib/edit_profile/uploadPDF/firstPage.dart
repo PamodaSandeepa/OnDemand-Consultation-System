@@ -148,12 +148,29 @@ class _FirstPageState extends State<FirstPage> {
       "FileName": "Certificate",
     };
     mainReference
+        .child('Consultants')
         .child('$id')
         .child('files')
         .child(CreateCryptoRandomString())
         .set(data)
         .then((v) {
       print("Store Successfully");
+    });
+
+    mainReference
+        .child('Consultants')
+        .child('$id')
+        .child('files')
+        .once()
+        .then((DataSnapshot snap) {
+      //get data from firebase
+      var data = snap.value;
+      itemList.clear();
+      data.forEach((key, value) {
+        Modal m = new Modal(value['PDF'], value['FileName']);
+        itemList.add(m);
+      });
+      setState(() {});
     });
   }
 

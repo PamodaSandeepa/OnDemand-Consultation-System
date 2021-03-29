@@ -3,13 +3,12 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:firebaseapp/authenticate/sign_in.dart';
 import 'package:firebaseapp/edit_profile/edit_profile.dart';
-import 'package:firebaseapp/edit_profile/getBatch.dart';
 import 'package:firebaseapp/edit_profile/settings.dart';
 import 'package:firebaseapp/edit_profile/uploadPDF/firstPage.dart';
 import 'package:firebaseapp/services/auth.dart';
 import 'package:firebaseapp/videochat/pages/meeting.dart';
+import 'package:firebaseapp/wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:firebaseapp/shared/loading.dart';
 
@@ -22,7 +21,7 @@ class _ConsultantState extends State<Home> {
   final AuthService _auth =
       AuthService(); //make a object of AuthService class in auth.dart file
 
-  // dp
+  //-------------------- dp
   final mainref = FirebaseDatabase.instance;
   String retrievedproPic = "";
   String retrievedfName = "";
@@ -79,7 +78,17 @@ class _ConsultantState extends State<Home> {
     });
   }
 
-  //
+  //--------------------
+  FirebaseAuth auth = FirebaseAuth.instance;
+
+  Future<void> checkAuthentication() async {
+    auth.onAuthStateChanged.listen((user) async {
+      if (user == null) {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Wrapper()));
+      }
+    });
+  }
 
   DateTime _pickedDate;
   TimeOfDay fromTime;
@@ -201,12 +210,25 @@ class _ConsultantState extends State<Home> {
                         SizedBox(
                           height: 4.0,
                         ),
-                        Text(
-                          "Verified Consultant",
-                          style: TextStyle(
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black,
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.red[100],
+                            border: Border.all(color: Colors.red),
+                            boxShadow: [
+                              BoxShadow(
+                                  spreadRadius: 1,
+                                  blurRadius: 5,
+                                  color: Colors.black.withOpacity(0.1),
+                                  offset: Offset(0, 10))
+                            ],
+                          ),
+                          child: Text(
+                            "Verified Consultant",
+                            style: TextStyle(
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black,
+                            ),
                           ),
                         ),
                       ],
@@ -277,6 +299,7 @@ class _ConsultantState extends State<Home> {
                 ListTile(
                   onTap: () async {
                     await _auth.signOut();
+                    await checkAuthentication();
                   },
                   leading: Icon(
                     Icons.exit_to_app,

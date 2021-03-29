@@ -4,6 +4,7 @@ import 'package:firebaseapp/authenticate/reset.dart';
 import 'package:firebaseapp/home/home.dart';
 import 'package:firebaseapp/services/auth.dart';
 import 'package:firebaseapp/shared/loading.dart';
+import 'package:firebaseapp/wrapper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -24,7 +25,7 @@ class _SignInState extends State<SignIn> {
   final FirebaseAuth __auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
-  Future<bool> googleSignIn2() async {
+  Future<bool> _googleSignIn2() async {
     GoogleSignInAccount googleSignInAccount = await _googleSignIn.signIn();
 
     if (googleSignInAccount != null) {
@@ -46,6 +47,36 @@ class _SignInState extends State<SignIn> {
     }
   }
 
+  //--------------------authentication
+  FirebaseAuth auth = FirebaseAuth.instance;
+  Future<void> checkAuthentication() async {
+    auth.onAuthStateChanged.listen((user) async {
+      if (user != null) {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Wrapper()));
+      }
+    });
+  }
+  //--------------------------
+
+  showError(String errormessage) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('ERROR'),
+            content: Text(errormessage),
+            actions: <Widget>[
+              FlatButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('OK'))
+            ],
+          );
+        });
+  }
+
   final _formkey = GlobalKey<FormState>(); //help the validate
 
   bool loading = false; //for loading screen
@@ -60,6 +91,7 @@ class _SignInState extends State<SignIn> {
     return loading
         ? Loading()
         : Scaffold(
+
             //if loading is true then return the loading screen else back to current page
             backgroundColor: Colors.blue[100],
             /* appBar:  AppBar(
@@ -232,16 +264,23 @@ class _SignInState extends State<SignIn> {
                                                       true; //valid nam loading wenawa
                                                 });
 
-                                                dynamic result = await _auth
+                                                FirebaseUser result = await _auth
                                                     .signInWithEmailAndPassword(
                                                         email, password);
+
                                                 if (result == null) {
-                                                  setState(() {
+                                                  setState(() async {
+                                                    setState(() {
+                                                      loading = false;
+                                                    });
                                                     error =
-                                                        'could not sign in with those credentials';
-                                                    loading = false;
+                                                        'Could not sign in with those credentials. Try again!';
+                                                    showError(error);
                                                   });
-                                                } //else is sucessfully registered.get that user back.go to (main.dart)
+                                                } else {
+                                                  //else is sucessfully registered.get that user back.go to (main.dart)
+                                                  await checkAuthentication();
+                                                }
                                               }
                                             },
                                             color: Colors.blue,
@@ -279,7 +318,7 @@ class _SignInState extends State<SignIn> {
                               FadeAnimation(
                                   1.7,
                                   Text(
-                                    "Continue with social media",
+                                    "Continue with Google Sign in",
                                     style: TextStyle(color: Colors.grey),
                                   )),
                               SizedBox(
@@ -289,7 +328,7 @@ class _SignInState extends State<SignIn> {
                                 1.8,
                                 RaisedButton(
                                     onPressed: () async {
-                                      googleSignIn2().whenComplete(() async {
+                                      _googleSignIn2().whenComplete(() async {
                                         FirebaseUser user = await FirebaseAuth
                                             .instance
                                             .currentUser();
